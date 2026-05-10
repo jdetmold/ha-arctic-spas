@@ -16,7 +16,7 @@ class HeaterStatus(str, Enum):
     IDLE = "IDLE"
     WARMUP = "WARMUP"
     HEATING = "HEATING"
-    OVERHEAT = "OVERHEAT"
+    COOLDOWN = "COOLDOWN"
 
 
 @dataclass(frozen=True)
@@ -42,7 +42,7 @@ class SpaState:
     stereo: bool | None = None
     heater_1: str | None = None  # raw HEATER_STATUS enum name
     heater_2: str | None = None
-    filter: str | None = None  # raw FILTER_STATUS enum name
+    filter: str | None = None  # raw FILTER_STATUS enum name (e.g. FILTER_FILTERING)
     onzen: bool | None = None
     ozone: str | None = None  # raw OZONE_STATUS name with OZONE_ prefix stripped
     exhaust_fan: bool | None = None
@@ -63,16 +63,36 @@ class SpaInfo:
     """Information packet contents (model, firmware, serial)."""
 
     pack_serial_number: str | None = None
-    model_number: str | None = None
     firmware_version: str | None = None
+    pack_firmware_version: str | None = None
+    product_code: str | None = None
+    mac_address: str | None = None
 
 
 @dataclass(frozen=True)
 class SpaConfiguration:
-    """Configuration packet contents — installed hardware."""
+    """Configuration packet contents — installed hardware.
 
-    exhaust_fan: bool | None = None
-    fogger: bool | None = None
+    Each ``*_installed`` field is True when the spa explicitly reports that
+    hardware is present, False when it explicitly reports absent, or None
+    when the field was not set on the wire (treat as unknown).
+    """
+
+    pump_1_installed: bool | None = None
+    pump_2_installed: bool | None = None
+    pump_3_installed: bool | None = None
+    pump_4_installed: bool | None = None
+    pump_5_installed: bool | None = None
+    blower_1_installed: bool | None = None
+    blower_2_installed: bool | None = None
+    lights_installed: bool | None = None
+    stereo_installed: bool | None = None
+    heater_1_installed: bool | None = None
+    heater_2_installed: bool | None = None
+    filter_installed: bool | None = None
+    onzen_installed: bool | None = None
+    exhaust_fan_installed: bool | None = None
+    fogger_installed: bool | None = None
     breaker_size: int | None = None
 
 
@@ -90,9 +110,20 @@ def _config_unknown(snap: SpaSnapshot) -> bool:
     return snap.config is None
 
 
+def _config_says(snap: SpaSnapshot, field: str) -> bool | None:
+    if snap.config is None:
+        return None
+    return getattr(snap.config, field, None)
+
+
 def has_pump(snap: SpaSnapshot, n: int) -> bool:
     if _config_unknown(snap):
         return 1 <= n <= 5
+    cfg = _config_says(snap, f"pump_{n}_installed")
+    if cfg is True:
+        return True
+    if cfg is False:
+        return False
     if snap.state is None:
         return False
     return getattr(snap.state, f"pump_{n}", None) is not None
@@ -101,6 +132,11 @@ def has_pump(snap: SpaSnapshot, n: int) -> bool:
 def has_blower(snap: SpaSnapshot, n: int) -> bool:
     if _config_unknown(snap):
         return 1 <= n <= 2
+    cfg = _config_says(snap, f"blower_{n}_installed")
+    if cfg is True:
+        return True
+    if cfg is False:
+        return False
     if snap.state is None:
         return False
     return getattr(snap.state, f"blower_{n}", None) is not None
@@ -109,24 +145,43 @@ def has_blower(snap: SpaSnapshot, n: int) -> bool:
 def has_lights(snap: SpaSnapshot) -> bool:
     if _config_unknown(snap):
         return True
+    cfg = _config_says(snap, "lights_installed")
+    if cfg is True:
+        return True
+    if cfg is False:
+        return False
     return snap.state is not None and snap.state.lights is not None
 
 
 def has_onzen(snap: SpaSnapshot) -> bool:
     if _config_unknown(snap):
         return True
+    cfg = _config_says(snap, "onzen_installed")
+    if cfg is True:
+        return True
+    if cfg is False:
+        return False
     return snap.state is not None and snap.state.onzen is not None
 
 
 def has_ph_orp(snap: SpaSnapshot) -> bool:
     if _config_unknown(snap):
         return True
+    # No direct config flag; pH/ORP requires onzen/Spa Boy hardware.
+    onzen = _config_says(snap, "onzen_installed")
+    if onzen is False:
+        return False
     return snap.state is not None and (snap.state.ph is not None or snap.state.orp is not None)
 
 
 def has_heater(snap: SpaSnapshot, n: int) -> bool:
     if _config_unknown(snap):
         return n in (1, 2)
+    cfg = _config_says(snap, f"heater_{n}_installed")
+    if cfg is True:
+        return True
+    if cfg is False:
+        return False
     if snap.state is None:
         return False
     return getattr(snap.state, f"heater_{n}", None) is not None
@@ -135,22 +190,33 @@ def has_heater(snap: SpaSnapshot, n: int) -> bool:
 def has_exhaust_fan(snap: SpaSnapshot) -> bool:
     if _config_unknown(snap):
         return True
-    if snap.config is not None and snap.config.exhaust_fan:
+    cfg = _config_says(snap, "exhaust_fan_installed")
+    if cfg is True:
         return True
+    if cfg is False:
+        return False
     return snap.state is not None and snap.state.exhaust_fan is not None
 
 
 def has_fogger(snap: SpaSnapshot) -> bool:
     if _config_unknown(snap):
         return True
-    if snap.config is not None and snap.config.fogger:
+    cfg = _config_says(snap, "fogger_installed")
+    if cfg is True:
         return True
+    if cfg is False:
+        return False
     return snap.state is not None and snap.state.fogger is not None
 
 
 def has_stereo(snap: SpaSnapshot) -> bool:
     if _config_unknown(snap):
         return True
+    cfg = _config_says(snap, "stereo_installed")
+    if cfg is True:
+        return True
+    if cfg is False:
+        return False
     return snap.state is not None and snap.state.stereo is not None
 
 

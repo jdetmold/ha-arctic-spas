@@ -1,0 +1,42 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Arctic Spa",
+        "description": "Enter your spa's local IP address.",
+        "data": {
+          "host": "Spa IP address",
+          "name": "Name"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Arctic Spa",
+        "description": "Update the IP address of this spa.",
+        "data": {
+          "host": "Spa IP address"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect to the spa.",
+      "invalid_response": "Connected, but did not receive a valid spa response.",
+      "no_serial": "Connected, but the spa did not report a serial number.",
+      "wrong_spa": "The IP responds, but it is a different spa than this entry."
+    },
+    "abort": {
+      "already_configured": "This spa is already configured.",
+      "reconfigure_successful": "Spa configuration updated."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "scan_interval": "Live update interval (seconds)",
+          "info_interval_ticks": "Information packets every N ticks",
+          "temperature_unit": "Temperature unit"
+        }
+      }
+    }
+  }
+}

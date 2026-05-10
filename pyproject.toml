@@ -1,0 +1,27 @@
+[project]
+name = "ha-arctic-spa"
+version = "0.1.0"
+description = "Home Assistant custom integration for Arctic Spa hot tubs"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [{name = "Jeff", email = "jeff@techyyc.com"}]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = ["custom_components/arctic_spa/pyarcticspa/proto"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "ASYNC", "PT"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
+exclude = ["custom_components/arctic_spa/pyarcticspa/proto/.*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

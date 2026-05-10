@@ -13,7 +13,7 @@ _runtime_version.ValidateProtobufRuntimeVersion(
     _runtime_version.Domain.PUBLIC,
     6,
     32,
-    1,
+    0,
     '',
     'SpaOnzen.proto'
 )

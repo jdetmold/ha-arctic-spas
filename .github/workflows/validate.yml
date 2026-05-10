@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ruff mypy mypy-protobuf pytest pytest-asyncio protobuf
+          pip install ruff mypy mypy-protobuf types-protobuf pytest pytest-asyncio protobuf
       - name: Ruff
         run: ruff check .
       - name: MyPy (library only)

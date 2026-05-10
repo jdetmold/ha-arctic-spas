@@ -1,5 +1,5 @@
 [project]
-name = "ha-arctic-spa"
+name = "ha-arctic-spas"
 version = "0.1.0"
 description = "Home Assistant custom integration for Arctic Spa hot tubs"
 readme = "README.md"

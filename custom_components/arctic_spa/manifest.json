@@ -5,9 +5,9 @@
   "config_flow": true,
   "integration_type": "device",
   "iot_class": "local_push",
-  "documentation": "https://github.com/jeff/ha-arctic-spa",
-  "issue_tracker": "https://github.com/jeff/ha-arctic-spa/issues",
-  "codeowners": ["@jeff"],
+  "documentation": "https://github.com/jdetmold/ha-arctic-spas",
+  "issue_tracker": "https://github.com/jdetmold/ha-arctic-spas/issues",
+  "codeowners": ["@jdetmold"],
   "requirements": ["protobuf>=4.21,<6"],
   "dhcp": []
 }

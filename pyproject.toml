@@ -20,7 +20,34 @@ ignore = ["E501"]
 python_version = "3.12"
 strict = true
 ignore_missing_imports = true
+explicit_package_bases = true
+mypy_path = "."
 exclude = ["custom_components/arctic_spa/pyarcticspa/proto/.*"]
+
+# pyarcticspa is the only package we type-check. The HA integration
+# modules (coordinator.py, climate.py, etc.) require the homeassistant
+# package which is not installed in the lint environment, so silence
+# them via override.
+[[tool.mypy.overrides]]
+module = [
+    "custom_components.arctic_spa",
+    "custom_components.arctic_spa.binary_sensor",
+    "custom_components.arctic_spa.button",
+    "custom_components.arctic_spa.climate",
+    "custom_components.arctic_spa.config_flow",
+    "custom_components.arctic_spa.const",
+    "custom_components.arctic_spa.coordinator",
+    "custom_components.arctic_spa.diagnostics",
+    "custom_components.arctic_spa.entity",
+    "custom_components.arctic_spa.select",
+    "custom_components.arctic_spa.sensor",
+    "custom_components.arctic_spa.switch",
+]
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "custom_components.arctic_spa.pyarcticspa.proto.*"
+ignore_errors = true
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

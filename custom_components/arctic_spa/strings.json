@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Arctic Spa",
-        "description": "Enter your spa's local IP address.",
+        "description": "Enter your spa's local IP address and a name. The name uniquely identifies the spa within Home Assistant — pick something distinct if you have more than one.",
         "data": {
           "host": "Spa IP address",
           "name": "Name"
@@ -19,12 +19,10 @@
     },
     "error": {
       "cannot_connect": "Could not connect to the spa.",
-      "invalid_response": "Connected, but did not receive a valid spa response.",
-      "no_serial": "Connected, but the spa did not report a serial number.",
-      "wrong_spa": "The IP responds, but it is a different spa than this entry."
+      "invalid_response": "Connected, but did not receive a valid spa response."
     },
     "abort": {
-      "already_configured": "This spa is already configured.",
+      "already_configured": "A spa with this name is already configured. Pick a different name or remove the existing entry first.",
       "reconfigure_successful": "Spa configuration updated."
     }
   },

@@ -12,6 +12,7 @@ from homeassistant.config_entries import (
     OptionsFlow,
 )
 from homeassistant.core import callback
+from homeassistant.util import slugify
 
 from .const import (
     CONF_HOST,
@@ -30,7 +31,7 @@ from .pyarcticspa import SpaClient
 _USER_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_HOST): str,
-        vol.Optional(CONF_NAME, default=DEFAULT_NAME): str,
+        vol.Required(CONF_NAME, default=DEFAULT_NAME): str,
     }
 )
 
@@ -48,22 +49,24 @@ class ArcticSpaConfigFlow(ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
         if user_input is not None:
             host = user_input[CONF_HOST]
-            name = user_input.get(CONF_NAME, DEFAULT_NAME)
+            name = user_input[CONF_NAME].strip() or DEFAULT_NAME
             try:
-                info = await SpaClient(host=host).probe_once(timeout=10.0)
+                await SpaClient(host=host).probe_once(timeout=10.0)
             except TimeoutError:
                 errors["base"] = "invalid_response"
             except (ConnectionError, OSError):
                 errors["base"] = "cannot_connect"
             else:
-                if not info.pack_serial_number:
-                    errors["base"] = "no_serial"
-                else:
-                    await self.async_set_unique_id(info.pack_serial_number)
-                    self._abort_if_unique_id_configured(updates={CONF_HOST: host})
-                    return self.async_create_entry(
-                        title=name, data={CONF_HOST: host}
-                    )
+                # Identity is the user-supplied name (slugified).
+                # Two spas in the same install must therefore have
+                # different names. Surviving IP changes is automatic
+                # — the reconfigure flow updates host without touching
+                # unique_id.
+                await self.async_set_unique_id(slugify(name))
+                self._abort_if_unique_id_configured(updates={CONF_HOST: host})
+                return self.async_create_entry(
+                    title=name, data={CONF_HOST: host}
+                )
         return self.async_show_form(
             step_id="user", data_schema=_USER_SCHEMA, errors=errors
         )
@@ -76,18 +79,15 @@ class ArcticSpaConfigFlow(ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             host = user_input[CONF_HOST]
             try:
-                info = await SpaClient(host=host).probe_once(timeout=10.0)
+                await SpaClient(host=host).probe_once(timeout=10.0)
             except TimeoutError:
                 errors["base"] = "invalid_response"
             except (ConnectionError, OSError):
                 errors["base"] = "cannot_connect"
             else:
-                if info.pack_serial_number != entry.unique_id:
-                    errors["base"] = "wrong_spa"
-                else:
-                    return self.async_update_reload_and_abort(
-                        entry, data_updates={CONF_HOST: host}
-                    )
+                return self.async_update_reload_and_abort(
+                    entry, data_updates={CONF_HOST: host}
+                )
         return self.async_show_form(
             step_id="reconfigure",
             data_schema=_RECONFIGURE_SCHEMA,

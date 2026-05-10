@@ -221,7 +221,14 @@ class SpaClient:
         await self.send_command_raw(MessageType.COMMAND, payload)
 
     async def probe_once(self, timeout: float = 10.0) -> SpaInfo:  # noqa: ASYNC109
-        """One-shot connect → request INFORMATION → return → disconnect."""
+        """One-shot connect → request INFORMATION → return → disconnect.
+
+        Returns the first INFORMATION packet decoded from the spa, even if
+        ``pack_serial_number`` is empty. Some Arctic Spa controllers do not
+        populate the serial in their INFORMATION packets; the config flow
+        is responsible for falling back to a different unique identifier
+        (usually the host address) when this happens.
+        """
         reader, writer = await asyncio.wait_for(
             asyncio.open_connection(self.host, self.port),
             timeout=self._connect_timeout,
@@ -249,8 +256,7 @@ class SpaClient:
                 for packet in parser.feed(chunk):
                     if packet.type == MessageType.INFORMATION:
                         info, _ph, _orp = decode_information_full(bytes(packet.payload))
-                        if info.pack_serial_number:
-                            return info
+                        return info
         finally:
             try:
                 writer.close()

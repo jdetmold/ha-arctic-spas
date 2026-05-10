@@ -30,3 +30,6 @@ htmlcov/
 .env
 .env.local
 settings.yaml
+
+# Reference clone (separate repo, kept locally for reference only)
+SpaBoii/

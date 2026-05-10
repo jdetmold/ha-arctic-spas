@@ -3,16 +3,16 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 
-class PumpStatus(str, Enum):
+class PumpStatus(StrEnum):
     OFF = "OFF"
     LOW = "LOW"
     HIGH = "HIGH"
 
 
-class HeaterStatus(str, Enum):
+class HeaterStatus(StrEnum):
     IDLE = "IDLE"
     WARMUP = "WARMUP"
     HEATING = "HEATING"

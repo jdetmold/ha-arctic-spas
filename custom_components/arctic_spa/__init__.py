@@ -1,13 +1,38 @@
-"""Arctic Spa integration entry point."""
+"""Arctic Spa integration entry point.
+
+The HA-specific imports below are wrapped so that this package can still
+be imported by the protocol-library test suite without Home Assistant
+being installed. At HA runtime, all imports succeed. The functions in
+this module are only invoked by HA, so they only matter when HA is
+present.
+"""
 
 from __future__ import annotations
 
 import logging
+from typing import TYPE_CHECKING
 
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import Platform
-from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryNotReady
+try:
+    from homeassistant.const import Platform
+    from homeassistant.exceptions import ConfigEntryNotReady
+
+    PLATFORMS: list[Platform] = [
+        Platform.BINARY_SENSOR,
+        Platform.BUTTON,
+        Platform.CLIMATE,
+        Platform.SELECT,
+        Platform.SENSOR,
+        Platform.SWITCH,
+    ]
+except ImportError:  # pragma: no cover - HA is required at runtime
+    PLATFORMS = []  # type: ignore[assignment]
+    ConfigEntryNotReady = Exception  # type: ignore[assignment,misc]
+
+if TYPE_CHECKING:
+    from homeassistant.config_entries import ConfigEntry
+    from homeassistant.core import HomeAssistant
+
+    from .coordinator import ArcticSpaCoordinator
 
 from .const import (
     CONF_HOST,
@@ -17,22 +42,14 @@ from .const import (
     DEFAULT_SCAN_INTERVAL,
     DOMAIN,
 )
-from .coordinator import ArcticSpaCoordinator
-from .pyarcticspa import SpaClient
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS: list[Platform] = [
-    Platform.BINARY_SENSOR,
-    Platform.BUTTON,
-    Platform.CLIMATE,
-    Platform.SELECT,
-    Platform.SENSOR,
-    Platform.SWITCH,
-]
-
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    from .coordinator import ArcticSpaCoordinator
+    from .pyarcticspa import SpaClient
+
     client = SpaClient(
         host=entry.data[CONF_HOST],
         scan_interval=entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL),

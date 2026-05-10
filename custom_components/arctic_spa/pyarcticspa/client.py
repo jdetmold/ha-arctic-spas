@@ -220,7 +220,7 @@ class SpaClient:
         """Send a serialized SpaCommand protobuf."""
         await self.send_command_raw(MessageType.COMMAND, payload)
 
-    async def probe_once(self, timeout: float = 10.0) -> SpaInfo:
+    async def probe_once(self, timeout: float = 10.0) -> SpaInfo:  # noqa: ASYNC109
         """One-shot connect → request INFORMATION → return → disconnect."""
         reader, writer = await asyncio.wait_for(
             asyncio.open_connection(self.host, self.port),

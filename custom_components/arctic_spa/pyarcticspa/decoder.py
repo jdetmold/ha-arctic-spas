@@ -7,6 +7,11 @@ Also handles the non-protobuf data SpaBoii reverse-engineered:
 
 from __future__ import annotations
 
+from typing import Any
+
+from google.protobuf.descriptor import EnumDescriptor
+from google.protobuf.message import Message
+
 from .models import PumpStatus, SpaConfiguration, SpaInfo, SpaState
 from .proto import SpaInformation_pb2, spa_configuration_pb2, spa_live_pb2
 
@@ -17,24 +22,24 @@ _PUMP_STATUS_FROM_PROTO = {
 }
 
 
-def _has(msg, field: str) -> bool:
+def _has(msg: Message, field: str) -> bool:
     try:
-        return msg.HasField(field)
+        return bool(msg.HasField(field))
     except ValueError:
         return False
 
 
-def _opt(msg, field: str):
+def _opt(msg: Message, field: str) -> Any:
     return getattr(msg, field) if _has(msg, field) else None
 
 
-def _opt_pump(msg, field: str) -> PumpStatus | None:
+def _opt_pump(msg: Message, field: str) -> PumpStatus | None:
     if not _has(msg, field):
         return None
     return _PUMP_STATUS_FROM_PROTO.get(getattr(msg, field))
 
 
-def _opt_enum_name(msg, field: str, descriptor) -> str | None:
+def _opt_enum_name(msg: Message, field: str, descriptor: EnumDescriptor) -> str | None:
     if not _has(msg, field):
         return None
     return descriptor.values_by_number[getattr(msg, field)].name

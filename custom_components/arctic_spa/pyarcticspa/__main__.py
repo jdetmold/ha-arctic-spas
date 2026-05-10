@@ -7,18 +7,19 @@ import logging
 import sys
 
 from .client import SpaClient
+from .models import SpaConfiguration, SpaInfo, SpaState
 
 
 async def _run(host: str) -> None:
     logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(message)s")
 
-    def on_state(state):
+    def on_state(state: SpaState) -> None:
         print(f"STATE: {state}")  # noqa: T201
 
-    def on_info(info):
+    def on_info(info: SpaInfo) -> None:
         print(f"INFO:  {info}")  # noqa: T201
 
-    def on_config(config):
+    def on_config(config: SpaConfiguration) -> None:
         print(f"CFG:   {config}")  # noqa: T201
 
     client = SpaClient(host)

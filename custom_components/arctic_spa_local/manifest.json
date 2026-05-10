@@ -1,6 +1,6 @@
 {
-  "domain": "arctic_spa",
-  "name": "Arctic Spa",
+  "domain": "arctic_spa_local",
+  "name": "Arctic Spa (Local)",
   "codeowners": ["@jdetmold"],
   "config_flow": true,
   "documentation": "https://github.com/jdetmold/ha-arctic-spas",

@@ -1,7 +1,7 @@
 """Tests for LevvenPacket serialization."""
 
-from custom_components.arctic_spa.pyarcticspa.protocol.messages import MessageType
-from custom_components.arctic_spa.pyarcticspa.protocol.packet import LevvenPacket
+from custom_components.arctic_spa_local.pyarcticspa.protocol.messages import MessageType
+from custom_components.arctic_spa_local.pyarcticspa.protocol.packet import LevvenPacket
 
 
 def test_serialize_live_ping_with_empty_payload() -> None:

@@ -2,7 +2,7 @@
   "config": {
     "step": {
       "user": {
-        "title": "Arctic Spa",
+        "title": "Arctic Spa (Local)",
         "description": "Enter your spa's local IP address and a name. The name uniquely identifies the spa within Home Assistant — pick something distinct if you have more than one.",
         "data": {
           "host": "Spa IP address",
@@ -10,7 +10,7 @@
         }
       },
       "reconfigure": {
-        "title": "Reconfigure Arctic Spa",
+        "title": "Reconfigure Arctic Spa (Local)",
         "description": "Update the IP address of this spa.",
         "data": {
           "host": "Spa IP address"

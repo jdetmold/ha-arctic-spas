@@ -2,8 +2,8 @@
 
 import pytest
 
-from custom_components.arctic_spa.pyarcticspa.proto import SpaCommand_pb2
-from custom_components.arctic_spa.pyarcticspa.protocol.commands import build_command
+from custom_components.arctic_spa_local.pyarcticspa.proto import SpaCommand_pb2
+from custom_components.arctic_spa_local.pyarcticspa.protocol.commands import build_command
 
 
 def test_build_command_with_setpoint_returns_serialized_bytes() -> None:

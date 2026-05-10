@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Final
 
-DOMAIN: Final = "arctic_spa"
+DOMAIN: Final = "arctic_spa_local"
 MANUFACTURER: Final = "Arctic Spa"
 DEFAULT_NAME: Final = "Arctic Spa"
 DEFAULT_PORT: Final = 65534

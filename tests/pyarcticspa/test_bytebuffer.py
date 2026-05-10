@@ -1,6 +1,6 @@
 """Tests for the big-endian ByteBuffer helper."""
 
-from custom_components.arctic_spa.pyarcticspa.protocol.bytebuffer import ByteBuffer
+from custom_components.arctic_spa_local.pyarcticspa.protocol.bytebuffer import ByteBuffer
 
 
 def test_put_int_writes_big_endian_4_bytes() -> None:

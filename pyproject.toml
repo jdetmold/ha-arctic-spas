@@ -10,7 +10,7 @@ authors = [{name = "Jeff", email = "jeff@techyyc.com"}]
 [tool.ruff]
 target-version = "py312"
 line-length = 100
-extend-exclude = ["custom_components/arctic_spa/pyarcticspa/proto"]
+extend-exclude = ["custom_components/arctic_spa_local/pyarcticspa/proto"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "N", "ASYNC", "PT"]
@@ -22,7 +22,7 @@ strict = true
 ignore_missing_imports = true
 explicit_package_bases = true
 mypy_path = "."
-exclude = ["custom_components/arctic_spa/pyarcticspa/proto/.*"]
+exclude = ["custom_components/arctic_spa_local/pyarcticspa/proto/.*"]
 
 # pyarcticspa is the only package we type-check. The HA integration
 # modules (coordinator.py, climate.py, etc.) require the homeassistant
@@ -30,23 +30,23 @@ exclude = ["custom_components/arctic_spa/pyarcticspa/proto/.*"]
 # them via override.
 [[tool.mypy.overrides]]
 module = [
-    "custom_components.arctic_spa",
-    "custom_components.arctic_spa.binary_sensor",
-    "custom_components.arctic_spa.button",
-    "custom_components.arctic_spa.climate",
-    "custom_components.arctic_spa.config_flow",
-    "custom_components.arctic_spa.const",
-    "custom_components.arctic_spa.coordinator",
-    "custom_components.arctic_spa.diagnostics",
-    "custom_components.arctic_spa.entity",
-    "custom_components.arctic_spa.select",
-    "custom_components.arctic_spa.sensor",
-    "custom_components.arctic_spa.switch",
+    "custom_components.arctic_spa_local",
+    "custom_components.arctic_spa_local.binary_sensor",
+    "custom_components.arctic_spa_local.button",
+    "custom_components.arctic_spa_local.climate",
+    "custom_components.arctic_spa_local.config_flow",
+    "custom_components.arctic_spa_local.const",
+    "custom_components.arctic_spa_local.coordinator",
+    "custom_components.arctic_spa_local.diagnostics",
+    "custom_components.arctic_spa_local.entity",
+    "custom_components.arctic_spa_local.select",
+    "custom_components.arctic_spa_local.sensor",
+    "custom_components.arctic_spa_local.switch",
 ]
 ignore_errors = true
 
 [[tool.mypy.overrides]]
-module = "custom_components.arctic_spa.pyarcticspa.proto.*"
+module = "custom_components.arctic_spa_local.pyarcticspa.proto.*"
 ignore_errors = true
 
 [tool.pytest.ini_options]

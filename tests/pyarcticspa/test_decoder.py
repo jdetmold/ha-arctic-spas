@@ -1,14 +1,14 @@
 """Tests for the LevvenPacket -> dataclass decoder."""
 
-from custom_components.arctic_spa.pyarcticspa.decoder import (
+from custom_components.arctic_spa_local.pyarcticspa.decoder import (
     decode_configuration,
     decode_information,
     decode_information_full,
     decode_live,
     decode_onzen_settings,
 )
-from custom_components.arctic_spa.pyarcticspa.models import PumpStatus
-from custom_components.arctic_spa.pyarcticspa.proto import (
+from custom_components.arctic_spa_local.pyarcticspa.models import PumpStatus
+from custom_components.arctic_spa_local.pyarcticspa.proto import (
     SpaInformation_pb2,
     spa_configuration_pb2,
     spa_live_pb2,

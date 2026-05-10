@@ -41,6 +41,6 @@ jobs:
       - name: Ruff
         run: ruff check .
       - name: MyPy (library only)
-        run: mypy custom_components/arctic_spa/pyarcticspa
+        run: mypy custom_components/arctic_spa_local/pyarcticspa
       - name: Pytest (protocol library)
         run: PYTHONPATH=. pytest tests/pyarcticspa/ -v

@@ -7,13 +7,13 @@ from contextlib import asynccontextmanager
 
 import pytest
 
-from custom_components.arctic_spa.pyarcticspa.client import SpaClient
-from custom_components.arctic_spa.pyarcticspa.proto import (
+from custom_components.arctic_spa_local.pyarcticspa.client import SpaClient
+from custom_components.arctic_spa_local.pyarcticspa.proto import (
     SpaInformation_pb2,
     spa_live_pb2,
 )
-from custom_components.arctic_spa.pyarcticspa.protocol.messages import MessageType
-from custom_components.arctic_spa.pyarcticspa.protocol.packet import LevvenPacket
+from custom_components.arctic_spa_local.pyarcticspa.protocol.messages import MessageType
+from custom_components.arctic_spa_local.pyarcticspa.protocol.packet import LevvenPacket
 
 
 def _live_packet(temp_f: int) -> bytes:

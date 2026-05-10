@@ -1,6 +1,6 @@
 """Tests for SpaSnapshot dataclasses and hardware-presence helpers."""
 
-from custom_components.arctic_spa.pyarcticspa.models import (
+from custom_components.arctic_spa_local.pyarcticspa.models import (
     PumpStatus,
     SpaConfiguration,
     SpaInfo,

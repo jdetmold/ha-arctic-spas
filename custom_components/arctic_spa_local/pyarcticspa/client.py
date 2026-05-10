@@ -69,7 +69,7 @@ class SpaClient:
         if self._task is not None:
             return
         self._stop_event.clear()
-        self._task = asyncio.create_task(self._run_forever(), name=f"arctic_spa[{self.host}]")
+        self._task = asyncio.create_task(self._run_forever(), name=f"arctic_spa_local[{self.host}]")
 
     async def stop(self) -> None:
         self._stop_event.set()

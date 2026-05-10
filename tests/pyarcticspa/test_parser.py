@@ -1,8 +1,8 @@
 """Tests for the streaming Levven packet parser."""
 
-from custom_components.arctic_spa.pyarcticspa.protocol.messages import MessageType
-from custom_components.arctic_spa.pyarcticspa.protocol.packet import LevvenPacket
-from custom_components.arctic_spa.pyarcticspa.protocol.parser import StreamParser
+from custom_components.arctic_spa_local.pyarcticspa.protocol.messages import MessageType
+from custom_components.arctic_spa_local.pyarcticspa.protocol.packet import LevvenPacket
+from custom_components.arctic_spa_local.pyarcticspa.protocol.parser import StreamParser
 
 
 def test_feed_complete_packet_yields_one_packet() -> None:
